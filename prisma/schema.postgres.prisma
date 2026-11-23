@@ -1,0 +1,168 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ORGANIZER
+  MEMBER
+}
+
+enum ActionStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum TranscriptSource {
+  PASTE
+  FILE
+}
+
+enum ReminderDeliveryStatus {
+  SENT
+  FAILED
+  SKIPPED_NO_TOKEN
+}
+
+model User {
+  id           String              @id @default(cuid())
+  name         String
+  email        String              @unique
+  passwordHash String
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  memberships  TeamMember[]
+  attendances  MeetingAttendee[]
+  actionItems  ActionItem[]        @relation("AssignedActions")
+  historyLogs  ActionItemHistory[]
+  deviceTokens DeviceToken[]
+  reminders    Reminder[]
+}
+
+model Team {
+  id          String       @id @default(cuid())
+  name        String
+  createdById String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  members     TeamMember[]
+  meetings    Meeting[]
+}
+
+model TeamMember {
+  id       String   @id @default(cuid())
+  teamId   String
+  userId   String
+  role     Role     @default(MEMBER)
+  joinedAt DateTime @default(now())
+
+  team     Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+}
+
+model Meeting {
+  id          String            @id @default(cuid())
+  teamId      String
+  title       String
+  meetingDate DateTime          @db.Date
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  team        Team              @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  attendees   MeetingAttendee[]
+  transcripts Transcript[]
+  actionItems ActionItem[]
+  decisions   Decision[]
+}
+
+model MeetingAttendee {
+  meetingId String
+  userId    String
+
+  meeting   Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([meetingId, userId])
+}
+
+model Transcript {
+  id        String           @id @default(cuid())
+  meetingId String
+  rawText   String           @db.Text
+  source    TranscriptSource @default(PASTE)
+  fileName  String?
+  createdAt DateTime         @default(now())
+
+  meeting   Meeting          @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+}
+
+model ActionItem {
+  id          String              @id @default(cuid())
+  meetingId   String
+  assigneeId  String?
+  description String              @db.Text
+  deadline    DateTime?           @db.Date
+  status      ActionStatus        @default(PENDING)
+  completedAt DateTime?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  meeting     Meeting             @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  assignee    User?               @relation("AssignedActions", fields: [assigneeId], references: [id], onDelete: SetNull)
+  history     ActionItemHistory[]
+  reminders   Reminder[]
+}
+
+model ActionItemHistory {
+  id           String       @id @default(cuid())
+  actionItemId String
+  changedById  String
+  oldStatus    ActionStatus
+  newStatus    ActionStatus
+  changedAt    DateTime     @default(now())
+
+  actionItem   ActionItem   @relation(fields: [actionItemId], references: [id], onDelete: Cascade)
+  changedBy    User         @relation(fields: [changedById], references: [id], onDelete: Cascade)
+}
+
+model Decision {
+  id           String   @id @default(cuid())
+  meetingId    String
+  decisionText String   @db.Text
+  createdAt    DateTime @default(now())
+
+  meeting      Meeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+}
+
+model DeviceToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Reminder {
+  id               String                 @id @default(cuid())
+  actionItemId     String
+  userId           String
+  sentAt           DateTime               @default(now())
+  deduplicationKey String                 @unique
+  deliveryStatus   ReminderDeliveryStatus @default(SENT)
+  errorMessage     String?
+
+  actionItem       ActionItem             @relation(fields: [actionItemId], references: [id], onDelete: Cascade)
+  user             User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

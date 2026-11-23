@@ -1,0 +1,123 @@
+[
+  {
+    "id": "bench-01",
+    "meetingTitle": "Database Migration & API Security",
+    "meetingDate": "2026-10-25",
+    "teamMembers": [
+      { "id": "u1", "name": "Ankita C" },
+      { "id": "u2", "name": "Eshwari Rao" },
+      { "id": "u3", "name": "Dev Sharma" }
+    ],
+    "transcript": "Ankita will write the database migration scripts by 2026-10-28. Dev Sharma needs to implement JWT cookie security by Friday. We agreed that all database credentials must remain strictly server-side.",
+    "groundTruth": {
+      "actions": [
+        {
+          "action": "Write the database migration scripts",
+          "assignee": "Ankita C",
+          "deadline": "2026-10-28"
+        },
+        {
+          "action": "Implement JWT cookie security",
+          "assignee": "Dev Sharma",
+          "deadline": "2026-10-30"
+        }
+      ],
+      "decisions": [
+        "All database credentials must remain strictly server-side"
+      ]
+    }
+  },
+  {
+    "id": "bench-02",
+    "meetingTitle": "Frontend Review Canvas Sync",
+    "meetingDate": "2026-10-26",
+    "teamMembers": [
+      { "id": "u1", "name": "Ankita C" },
+      { "id": "u2", "name": "Eshwari Rao" },
+      { "id": "u3", "name": "Dev Sharma" }
+    ],
+    "transcript": "Eshwari will test the review canvas with mock Ollama JSON payloads by tomorrow. The team decided to adopt a dark mode glassmorphic UI aesthetic.",
+    "groundTruth": {
+      "actions": [
+        {
+          "action": "Test the review canvas with mock Ollama JSON payloads",
+          "assignee": "Eshwari Rao",
+          "deadline": "2026-10-27"
+        }
+      ],
+      "decisions": [
+        "Adopt a dark mode glassmorphic UI aesthetic"
+      ]
+    }
+  },
+  {
+    "id": "bench-03",
+    "meetingTitle": "FCM Overdue Reminder Planning",
+    "meetingDate": "2026-10-27",
+    "teamMembers": [
+      { "id": "u1", "name": "Ankita C" },
+      { "id": "u2", "name": "Eshwari Rao" },
+      { "id": "u3", "name": "Dev Sharma" }
+    ],
+    "transcript": "Dev will register the Firebase service worker. We agreed that reminders should run on a daily schedule and deduplicate notifications so users don't receive spam.",
+    "groundTruth": {
+      "actions": [
+        {
+          "action": "Register the Firebase service worker",
+          "assignee": "Dev Sharma",
+          "deadline": null
+        }
+      ],
+      "decisions": [
+        "Reminders should run on a daily schedule and deduplicate notifications to prevent spam"
+      ]
+    }
+  },
+  {
+    "id": "bench-04",
+    "meetingTitle": "Weekly Project Progress Meeting",
+    "meetingDate": "2026-11-16",
+    "teamMembers": [
+      { "id": "t1", "name": "David Wilson" },
+      { "id": "t2", "name": "Sarah Johnson" },
+      { "id": "t3", "name": "Michael Brown" },
+      { "id": "t4", "name": "Emily Davis" },
+      { "id": "t5", "name": "Robert Smith" },
+      { "id": "t6", "name": "Jessica Taylor" }
+    ],
+    "transcript": "Michael will optimize SQL queries and test dashboard performance by Thursday. Emily to complete dashboard UI design by Wednesday. Robert will prepare marketing plan and teaser campaign by Thursday. Jessica will finalize shortlisted candidates and send recruitment schedule by Friday. Sarah will coordinate testing activities before the next meeting.",
+    "groundTruth": {
+      "actions": [
+        {
+          "action": "Optimize SQL queries and test dashboard performance",
+          "assignee": "Michael Brown",
+          "deadline": "2026-11-19"
+        },
+        {
+          "action": "Complete the updated dashboard UI design",
+          "assignee": "Emily Davis",
+          "deadline": "2026-11-18"
+        },
+        {
+          "action": "Prepare the marketing plan and teaser campaign",
+          "assignee": "Robert Smith",
+          "deadline": "2026-11-19"
+        },
+        {
+          "action": "Finalize shortlisted candidates and prepare the interview schedule",
+          "assignee": "Jessica Taylor",
+          "deadline": "2026-11-20"
+        },
+        {
+          "action": "Coordinate testing activities and prepare the project progress report",
+          "assignee": "Sarah Johnson",
+          "deadline": null
+        }
+      ],
+      "decisions": [
+        "Complete pending development work before testing",
+        "Start promotional teaser posts without announcing unconfirmed launch date"
+      ]
+    }
+  }
+]
